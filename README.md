@@ -242,6 +242,34 @@ stdlib = { git="https://github.com/fortran-lang/stdlib", branch="stdlib-fpm" }
 ### Using stdlib with a regular Makefile
 
 After the library has been built, it can be included in a regular Makefile.
+The recommended way to do this is using the [pkg-config](https://www.freedesktop.org/wiki/Software/pkg-config/) tool, for which an example is shown below.
+<details>
+  <summary>Makefile using pkg-config</summary>
+```make
+# These two lines are necessary if the install dir is not in PKG_CONFIG_PATH
+install_dir := path/to/install_dir
+export PKG_CONFIG_PATH := $(install_dir)/lib/pkgconfig:$(PKG_CONFIG_PATH)
+
+# Use pkg-config to obtain compilation flags for stdlib
+STDLIB_CFLAGS := `pkg-config --cflags fortran_stdlib`
+STDLIB_LIBS := `pkg-config --libs fortran_stdlib`
+
+# Define compiler and compilation flags, for example
+FC := gfortran
+FFLAGS := -O2 -Wall -g
+
+...
+
+# Example of compilation rules, where FC is the Fortran compiler
+%.o: %.f90
+	$(FC) -c -o $@ $< $(FFLAGS) $(STDLIB_CFLAGS)
+%: %.o
+	$(FC) -o $@ $^ $(FFLAGS) $(STDLIB_LIBS)
+
+```
+</details>
+
+The same can also be achieved without pkg-config.
 If the library has been installed in a directory inside the compiler's search path,
 only a flag `-lfortran_stdlib` is required to link against `libfortran_stdlib.a` or `libfortran_stdlib.so`.
 If the installation directory is not in the compiler's search path, one can add for example
