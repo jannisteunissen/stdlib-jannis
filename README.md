@@ -245,28 +245,28 @@ After the library has been built, it can be included in a regular Makefile.
 The recommended way to do this is using the [pkg-config](https://www.freedesktop.org/wiki/Software/pkg-config/) tool, for which an example is shown below.
 <details>
   <summary>Makefile using pkg-config</summary>
-```make
-# These two lines are necessary if the install dir is not in PKG_CONFIG_PATH
-install_dir := path/to/install_dir
-export PKG_CONFIG_PATH := $(install_dir)/lib/pkgconfig:$(PKG_CONFIG_PATH)
+  ```make
+  # These two lines are necessary if the install dir is not in PKG_CONFIG_PATH
+  install_dir := path/to/install_dir
+  export PKG_CONFIG_PATH := $(install_dir)/lib/pkgconfig:$(PKG_CONFIG_PATH)
 
-# Use pkg-config to obtain compilation flags for stdlib
-STDLIB_CFLAGS := `pkg-config --cflags fortran_stdlib`
-STDLIB_LIBS := `pkg-config --libs fortran_stdlib`
+  # Use pkg-config to obtain compilation flags for stdlib
+  STDLIB_CFLAGS := `pkg-config --cflags fortran_stdlib`
+  STDLIB_LIBS := `pkg-config --libs fortran_stdlib`
 
-# Define compiler and compilation flags, for example
-FC := gfortran
-FFLAGS := -O2 -Wall -g
+  # Define compiler and compilation flags, for example
+  FC := gfortran
+  FFLAGS := -O2 -Wall -g
 
-...
+  ...
 
-# Example of compilation rules, where FC is the Fortran compiler
-%.o: %.f90
-	$(FC) -c -o $@ $< $(FFLAGS) $(STDLIB_CFLAGS)
-%: %.o
-	$(FC) -o $@ $^ $(FFLAGS) $(STDLIB_LIBS)
+  # Example of compilation rules, where FC is the Fortran compiler
+  %.o: %.f90
+      $(FC) -c -o $@ $< $(FFLAGS) $(STDLIB_CFLAGS)
+  %: %.o
+      $(FC) -o $@ $^ $(FFLAGS) $(STDLIB_LIBS)
 
-```
+  ```
 </details>
 
 The same can also be achieved without pkg-config.
