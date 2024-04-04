@@ -245,6 +245,9 @@ After the library has been built, it can be included in a regular Makefile.
 The recommended way to do this is using the [pkg-config](https://www.freedesktop.org/wiki/Software/pkg-config/) tool, for which an example is shown below.
 <details>
   <summary>Makefile using pkg-config</summary>
+
+  ### Makefile example
+
   ```make
   # These two lines are necessary if the install dir is not in PKG_CONFIG_PATH
   install_dir := path/to/install_dir
